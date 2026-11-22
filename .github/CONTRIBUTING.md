@@ -6,7 +6,7 @@ Small focused changes are welcome. Before implementing a large change, open an i
 
 ## Development
 
-Use Windows x64, Python 3.10, and the pinned dependencies. See [README](README.md) for source and build commands, and [architecture](docs/ARCHITECTURE.md) for module responsibilities.
+Use Windows x64, Python 3.10, and the pinned dependencies. See the [developer guide](../joycon2_assistant/README.md) for source, build commands and module responsibilities.
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
@@ -22,7 +22,7 @@ The full local build smoke includes passive Bluetooth scan/cancel. CI uses `-Ski
 
 - Explain the visible behavior that changes and how it was verified.
 - Keep UI text in the English, Simplified Chinese and Traditional Chinese dictionaries. Add stable backend event keys rather than translating raw diagnostics in the browser.
-- Keep original code separate from `vendor`; preserve upstream licenses and record any dependency changes in `NOTICE.md`.
+- Keep original code separate from `vendor`; preserve upstream licenses and record dependency changes in `licenses/NOTICE.md`.
 - Include focused tests for changed behavior. For visual changes, include light/dark and narrow/wide screenshots.
 - Exclude runtime logs, Bluetooth addresses, local configuration, credentials, build output and personal paths.
 

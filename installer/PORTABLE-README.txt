@@ -1,4 +1,4 @@
-Joy-Con 2 Local Assistant 1.1.1 — Windows 10/11 x64
+Joy-Con 2 Local Assistant 1.1.2 — Windows 10/11 x64
 
 1. Extract the ENTIRE ZIP into a folder you own. Keep _internal and both EXEs.
 2. Run JoyCon2Assistant.exe. No Python installation is needed.
@@ -26,6 +26,8 @@ that folder is read-only. Bluetooth device addresses are redacted from logs.
 This portable application is unsigned; no signing certificate is claimed.
 The separately downloaded official vJoy driver is signed by its publisher.
 
-See LICENSE, NOTICE.md and _internal/licenses for licenses, including the
+See LICENSE, licenses/NOTICE.md and _internal/licenses for licenses, including the
 LGPL pynput source and replacement/rebuild rights. Keep these notices when
-redistributing. Source users build with scripts/build-portable.ps1.
+redistributing. Source users launch with python -m joycon2_assistant.launcher
+and build with scripts/build-portable.ps1. Developer notes are in
+joycon2_assistant/README.md in the public source repository.

@@ -2,7 +2,7 @@
 from pathlib import Path
 from PyInstaller.utils.hooks import collect_all
 
-root = Path(SPECPATH)
+root = Path(SPECPATH).parent
 datas = [(str(root / 'joycon2_assistant' / 'static'), 'joycon2_assistant/static'),
          (str(root / 'vendor' / 'joy2win'), 'vendor/joy2win'),
          (str(root / 'vendor' / 'vjoy'), 'vendor/vjoy'),
@@ -22,7 +22,8 @@ datas = [entry for entry in datas if not entry[1].replace('\\', '/').startswith(
 binaries = [entry for entry in binaries if not entry[1].replace('\\', '/').startswith('pyvjoy/utils')]
 binaries.append((str(root / 'vendor' / 'vjoy' / 'vJoyInterface.dll'), 'pyvjoy/utils/x64'))
 
-a = Analysis([str(root / 'app.py'), str(root / 'worker_entry.py')],
+a = Analysis([str(root / 'installer' / 'entrypoints' / 'app.py'),
+              str(root / 'installer' / 'entrypoints' / 'worker_entry.py')],
              pathex=[str(root), str(root / 'vendor' / 'joy2win')],
              binaries=binaries, datas=datas, hiddenimports=hidden,
              excludes=['tkinter', 'unittest', 'pynput.keyboard._darwin',

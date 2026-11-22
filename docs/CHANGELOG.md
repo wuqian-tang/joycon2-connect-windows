@@ -1,5 +1,12 @@
 # Changelog / 更新记录
 
+## 1.1.2
+
+- Simplified player guide with separate English and Chinese sections.
+- Moved development details into the code package and consolidated packaging files.
+
+精简玩家使用说明，英文与中文分开；将技术文档移入代码目录，并整理根目录。
+
 ## 1.1.1
 
 - Larger, symmetrical Joy-Con icons with transparent backgrounds across the app, website and desktop shortcut.

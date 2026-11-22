@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 
 APP_ID = 'joycon2-local-assistant'
-VERSION = '1.1.1'
+VERSION = '1.1.2'
 PORT = 19862
 
 

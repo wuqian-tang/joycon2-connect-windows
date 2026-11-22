@@ -16,7 +16,7 @@ try {
     & $Python -c "import struct,sys; assert sys.platform=='win32' and struct.calcsize('P')==8, 'Build requires Windows x64 Python'"
     if ($LASTEXITCODE -ne 0) { throw 'Build requires Windows x64 Python.' }
     if (-not $SkipInstall) {
-        & $Python -m pip install --index-url https://pypi.org/simple -r requirements-build.txt
+        & $Python -m pip install --index-url https://pypi.org/simple -r installer\requirements-build.txt
         if ($LASTEXITCODE -ne 0) { throw 'Build dependencies could not be installed.' }
     }
     & $Python -m unittest discover -s tests -v
@@ -25,10 +25,12 @@ try {
         & $Python scripts\make_icon.py
         if ($LASTEXITCODE -ne 0) { throw 'Icon generation failed.' }
     }
-    & $Python -m PyInstaller --noconfirm --clean JoyCon2Assistant.spec
+    & $Python -m PyInstaller --noconfirm --clean installer\JoyCon2Assistant.spec
     if ($LASTEXITCODE -ne 0) { throw 'PyInstaller failed.' }
     $bundle = Join-Path $appRoot 'dist\JoyCon2Assistant'
-    Copy-Item -LiteralPath LICENSE,NOTICE.md,PORTABLE-README.txt -Destination $bundle
+    Copy-Item -LiteralPath LICENSE,installer\PORTABLE-README.txt -Destination $bundle
+    New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'licenses') | Out-Null
+    Copy-Item -LiteralPath licenses\NOTICE.md -Destination (Join-Path $bundle 'licenses')
     if (Test-Path -LiteralPath README.md) { Copy-Item -LiteralPath README.md -Destination $bundle }
     New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'assets') | Out-Null
     Copy-Item -LiteralPath assets\app.png -Destination (Join-Path $bundle 'assets')
@@ -36,9 +38,17 @@ try {
         New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'docs') | Out-Null
         Copy-Item -LiteralPath docs\screenshots -Destination (Join-Path $bundle 'docs') -Recurse
     }
-    if (Test-Path -LiteralPath docs\ARCHITECTURE.md) {
+    if (Test-Path -LiteralPath docs\CHANGELOG.md) {
         New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'docs') | Out-Null
-        Copy-Item -LiteralPath docs\ARCHITECTURE.md -Destination (Join-Path $bundle 'docs')
+        Copy-Item -LiteralPath docs\CHANGELOG.md -Destination (Join-Path $bundle 'docs')
+    }
+    if (Test-Path -LiteralPath joycon2_assistant\README.md) {
+        New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'joycon2_assistant') | Out-Null
+        Copy-Item -LiteralPath joycon2_assistant\README.md -Destination (Join-Path $bundle 'joycon2_assistant')
+    }
+    if (Test-Path -LiteralPath .github\CONTRIBUTING.md) {
+        New-Item -ItemType Directory -Force -Path (Join-Path $bundle '.github') | Out-Null
+        Copy-Item -LiteralPath .github\CONTRIBUTING.md -Destination (Join-Path $bundle '.github')
     }
     New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'scripts') | Out-Null
     Copy-Item -LiteralPath scripts\create-shortcut.ps1 -Destination (Join-Path $bundle 'scripts')

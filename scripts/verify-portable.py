@@ -13,11 +13,33 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from joycon2_assistant.paths import VERSION
+
+
+class PortableRuntime(tempfile.TemporaryDirectory):
+    """Retry brief Windows loader log locks only after confirmed server exit."""
+    server_exited = False
+
+    def cleanup(self):
+        deadline = time.monotonic() + 3
+        while True:
+            try:
+                return super().cleanup()
+            except OSError as exc:
+                # Python 3.10's rmtree handler can wrap sharing violation 32
+                # in NotADirectoryError 267 while attempting its file fallback.
+                cause, sharing_lock = exc, False
+                while cause is not None:
+                    sharing_lock |= getattr(cause, 'winerror', None) == 32
+                    cause = cause.__context__
+                if not self.server_exited or not sharing_lock or time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.05)
 
 
 def main():
@@ -35,7 +57,8 @@ def main():
     kernel.WaitForSingleObject.restype = wintypes.DWORD
     kernel.CloseHandle.argtypes = [wintypes.HANDLE]
     kernel.CloseHandle.restype = wintypes.BOOL
-    with tempfile.TemporaryDirectory(prefix='joycon2-portable-check-') as runtime:
+    runtime_directory = PortableRuntime(prefix='joycon2-portable-check-')
+    with runtime_directory as runtime:
         env = dict(os.environ, JOYCON2_RUNTIME_DIR=runtime, PYTHONIOENCODING='utf-8')
         with socket.socket() as sock:
             sock.bind(('127.0.0.1', 0))
@@ -116,6 +139,7 @@ def main():
                     try:
                         result = kernel.WaitForSingleObject(server_handle, 10000)
                         assert result == 0, f'Test server did not exit within 10 seconds (wait={result})'
+                        runtime_directory.server_exited = True
                     finally:
                         kernel.CloseHandle(server_handle)
             if token:

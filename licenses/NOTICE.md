@@ -5,6 +5,8 @@ Windows, Steam, and other product names belong to their respective owners.
 This project is not affiliated with Nintendo, Microsoft, or Valve.
 
 The assistant's original code and drawings are provided under LICENSE (MIT).
+Repository paths below start at the project root. In a portable build,
+runtime dependency source, libraries, and license texts are inside `_internal`.
 The following separately licensed components retain their own terms:
 
 * **Joy2Win**, Logan Gaillard / Octokling, commit

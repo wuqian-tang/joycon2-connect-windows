@@ -1,11 +1,25 @@
-Offline Windows x64 Joy-Con 2 connection assistant with a responsive local interface, system dark mode, English / Simplified Chinese / Traditional Chinese (Taiwan), and live button/stick visualization.
+## English
 
-Recommended: run `JoyCon2Connect-1.1.1-Setup.exe`, choose a folder and keep the desktop shortcut. The first-run web guide checks prerequisites, then walks through left pairing, right pairing and input testing. If needed, its Install vJoy action downloads and verifies the fixed official signed driver before opening the Windows wizard.
+For Windows 10/11, 64-bit, with Bluetooth and a pair of Joy-Con 2 controllers.
 
-Alternatively, extract the complete ZIP and run `JoyCon2Assistant.exe`; keep `_internal` and both EXEs together. No Python installation is required. Windows 10/11 x64 and Bluetooth Low Energy are required. The app/setup EXEs are unsigned.
+### Download
 
-推荐下载 Setup.exe：双击安装、选择目录并创建桌面快捷方式。首次打开会依次引导检查环境、连接左手、连接右手和测试输入。缺少 vJoy 时，点击安装按钮即可下载、验证官方签名驱动，再完成 Windows 安装向导。
+- **Installer — recommended:** [JoyCon2Connect-{{VERSION}}-Setup.exe](https://github.com/wuqian-tang/joycon2-connect-windows/releases/download/v{{VERSION}}/JoyCon2Connect-{{VERSION}}-Setup.exe)
+- **Portable:** [JoyCon2Assistant-{{VERSION}}-windows-x64.zip](https://github.com/wuqian-tang/joycon2-connect-windows/releases/download/v{{VERSION}}/JoyCon2Assistant-{{VERSION}}-windows-x64.zip)
 
-也可下载便携 ZIP，完整解压后运行 `JoyCon2Assistant.exe`，保留两个 EXE 和 `_internal` 文件夹。无需安装 Python。支持明暗主题切换、EN / 繁 / 简、平面双 JC 实时反馈。程序和安装包尚未签名。详见中英文 README。
+Run the installer and open the desktop shortcut. For the portable version, extract the whole folder and run `JoyCon2Assistant.exe`. Follow the app's setup and connection guide.
 
-Checksums are provided as `.sha256`. Keep the bundled license notices when redistributing.
+[Player guide](https://github.com/wuqian-tang/joycon2-connect-windows/#english) · [Changes](https://github.com/wuqian-tang/joycon2-connect-windows/blob/v{{VERSION}}/docs/CHANGELOG.md)
+
+## 简体中文
+
+适用于 64 位 Windows 10/11，需要蓝牙和一对 Joy-Con 2。
+
+### 下载
+
+- **安装版（推荐）：** [JoyCon2Connect-{{VERSION}}-Setup.exe](https://github.com/wuqian-tang/joycon2-connect-windows/releases/download/v{{VERSION}}/JoyCon2Connect-{{VERSION}}-Setup.exe)
+- **便携版：** [JoyCon2Assistant-{{VERSION}}-windows-x64.zip](https://github.com/wuqian-tang/joycon2-connect-windows/releases/download/v{{VERSION}}/JoyCon2Assistant-{{VERSION}}-windows-x64.zip)
+
+安装版双击安装后，从桌面打开助手；便携版完整解压后运行 `JoyCon2Assistant.exe`。按网页提示完成环境检查和左右手柄连接即可。
+
+[使用说明](https://github.com/wuqian-tang/joycon2-connect-windows/#简体中文) · [更新内容](https://github.com/wuqian-tang/joycon2-connect-windows/blob/v{{VERSION}}/docs/CHANGELOG.md)
