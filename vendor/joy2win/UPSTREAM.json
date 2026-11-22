@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/Logan-Gaillard/Joy2Win",
+  "commit": "932d6d7dc1a11402b019ac3ff88056dd4bb8d702",
+  "license": "MIT",
+  "modifications": "None. Only required modules and the public sample configuration are included.",
+  "files": {
+    "config-example.ini": "6fcf0319129e23d6cc88df716df28ccc275a57f2a7075a113535a1d21581708a",
+    "config.py": "a5aabb9fcf3c4dde872fc6fafa633c8bcf2e32363ef609ae8006bc144938eb4f",
+    "control_type/duo_joycon.py": "413aaff20ee4d7f40562a16588795f7cfb704f3d4a20245cb15019d6e2ae9cb7",
+    "controller_command.py": "a38e217d4c458cf2f46e7c8fd2f397a819a4ca4d45889a6b2b93ed681b1f73bb",
+    "controllers/JoyconL.py": "1a812feb04d67e5e95b9fb370117f5dae8c3527167dfcfcc4f47663ca74870c0",
+    "controllers/JoyconR.py": "35ab69451dffacbb7b5982e3e3a7306a77547d8cff7c47bf767b26ddce8d14b3",
+    "dsu_server.py": "1e0677319b1d461d85e2ee7aa4ac05ded16ad4e41ac28ac260d41bf2859f8645",
+    "LICENSE": "4a24562902d81f58af56f0ad49759e397aa38c65886239f4e4567aa6fcf1fa9d",
+    "main.py": "6c772c2300e802907cd6849cb8a472006a09e4351a4e8464428619f41c33cc34"
+  }
+}

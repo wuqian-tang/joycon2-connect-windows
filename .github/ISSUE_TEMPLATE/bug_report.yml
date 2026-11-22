@@ -1,0 +1,22 @@
+name: Bug report / 问题反馈
+description: Report a reproducible connection or interface issue / 反馈可复现的问题
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior / 预期与实际表现
+      description: Include the steps needed to reproduce it. / 请提供复现步骤。
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 使用环境
+      description: App version, Windows version, Bluetooth adapter, vJoy version, and game if relevant. / 程序、系统、蓝牙、vJoy 版本及相关游戏。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshot or relevant diagnostic / 截图或相关诊断
+      description: Remove personal paths, Bluetooth addresses and other private information before sharing. / 分享前请删除个人路径、蓝牙地址等隐私信息。

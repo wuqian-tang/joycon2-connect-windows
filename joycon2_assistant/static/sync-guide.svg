@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="380" viewBox="0 0 620 380">
+  <defs><linearGradient id="blue" x2="1"><stop stop-color="#22a6d2"/><stop offset=".55" stop-color="#77daf5"/><stop offset="1" stop-color="#37b2db"/></linearGradient><linearGradient id="orange" x2="1"><stop stop-color="#e97b51"/><stop offset=".55" stop-color="#ffa37c"/><stop offset="1" stop-color="#ec805b"/></linearGradient><filter id="shadow" x="-40%" y="-10%" width="180%" height="130%"><feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="#122536" flood-opacity=".15"/></filter></defs>
+  <g font-family="Segoe UI,Arial,sans-serif" text-anchor="middle">
+    <g filter="url(#shadow)"><path d="M164 25h31q18 0 18 20v290q0 20-18 20h-31q-18 0-18-20V45q0-20 18-20Z" fill="#283744"/><rect x="156" y="23" width="48" height="332" rx="21" fill="url(#blue)"/><path d="M425 25h31q18 0 18 20v290q0 20-18 20h-31q-18 0-18-20V45q0-20 18-20Z" fill="#283744"/><rect x="417" y="23" width="48" height="332" rx="21" fill="url(#orange)"/></g>
+    <g fill="#25343f" stroke="#536a77" stroke-width="1.5"><rect x="165" y="54" width="30" height="64" rx="8"/><rect x="165" y="266" width="30" height="64" rx="8"/><rect x="426" y="54" width="30" height="64" rx="8"/><rect x="426" y="266" width="30" height="64" rx="8"/></g>
+    <g fill="#eaf0f5" font-size="14" font-weight="600"><text x="180" y="91">SL</text><text x="180" y="303">SR</text><text x="441" y="91">SL</text><text x="441" y="303">SR</text></g>
+    <g fill="#14212b"><rect x="170" y="141" width="20" height="70" rx="5"/><rect x="431" y="141" width="20" height="70" rx="5"/></g><g stroke="#61707b" stroke-width="1.4"><path d="M176 148v55m8-55v55m253-55v55m8-55v55"/></g>
+    <g fill="#1c303d" stroke="#79a4b9" stroke-width="1.5"><circle cx="180" cy="235" r="6"/><circle cx="441" cy="235" r="6"/></g><g fill="none" stroke="#ed5e50" stroke-width="3"><circle cx="180" cy="235" r="20"/><circle cx="441" cy="235" r="20"/><path d="M206 235h58m151 0h-58"/></g>
+    <rect x="271" y="216" width="78" height="38" rx="19" fill="#ed5e50"/><text x="310" y="241" fill="#fff" font-size="18" font-weight="650">SYNC</text>
+    <g fill="#2b4051" font-size="17" font-weight="650"><circle cx="105" cy="55" r="18" fill="#d9f4fc"/><text x="105" y="61">L</text><circle cx="516" cy="55" r="18" fill="#ffe6db"/><text x="516" y="61">R</text></g>
+  </g>
+</svg>
