@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+from ctypes import wintypes
 import json
 import os
 import queue
@@ -11,9 +13,11 @@ import subprocess
 import sys
 import tempfile
 import threading
-import time
 import urllib.request
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from joycon2_assistant.paths import VERSION
 
 
 def main():
@@ -24,6 +28,13 @@ def main():
     arguments = parser.parse_args()
     bundle = arguments.bundle.resolve()
     flags = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+    kernel.WaitForSingleObject.restype = wintypes.DWORD
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.CloseHandle.restype = wintypes.BOOL
     with tempfile.TemporaryDirectory(prefix='joycon2-portable-check-') as runtime:
         env = dict(os.environ, JOYCON2_RUNTIME_DIR=runtime, PYTHONIOENCODING='utf-8')
         with socket.socket() as sock:
@@ -39,6 +50,7 @@ def main():
 
         token = None
         worker = None
+        server_handle = None
         try:
             # The launching process must exit while its independent server stays up.
             launcher = subprocess.Popen([str(bundle / 'JoyCon2Assistant.exe'), '--port', str(port),
@@ -46,7 +58,12 @@ def main():
             if launcher.wait(timeout=25) != 0:
                 raise AssertionError('Windowed launcher exited with an error')
             health = json.loads(request('/api/health'))
-            assert health['app'] == 'joycon2-local-assistant' and health['version'] == '1.1.0', health
+            # Keep the actual process alive as a waitable kernel object. The
+            # identity file disappears before Python closes windowed log streams.
+            server_handle = kernel.OpenProcess(0x00100000, False, health['pid'])  # SYNCHRONIZE
+            if not server_handle:
+                raise ctypes.WinError(ctypes.get_last_error())
+            assert health['app'] == 'joycon2-local-assistant' and health['version'] == VERSION, health
             assert health['pid'] != launcher.pid
             page = request('/').decode('utf-8')
             # Find the server nonce by the token meta element, independent of layout.
@@ -91,16 +108,25 @@ def main():
             if worker is not None and worker.poll() is None:
                 worker.terminate()
                 worker.wait(timeout=5)
+            try:
+                if token:
+                    request('/api/exit', token)
+            finally:
+                if server_handle:
+                    try:
+                        result = kernel.WaitForSingleObject(server_handle, 10000)
+                        assert result == 0, f'Test server did not exit within 10 seconds (wait={result})'
+                    finally:
+                        kernel.CloseHandle(server_handle)
             if token:
-                request('/api/exit', token)
-                identity = Path(runtime) / f'server-{port}.json'
-                until = time.monotonic() + 10
-                while identity.exists() and time.monotonic() < until:
-                    time.sleep(0.1)
-                assert not identity.exists(), 'Test server did not cleanly exit'
+                assert not (Path(runtime) / f'server-{port}.json').exists(), 'Test server left its identity file'
             for path in (Path(runtime) / 'launcher.log', Path(runtime) / 'server.log'):
-                if path.exists() and path.stat().st_size:
-                    print(path.read_text(encoding='utf-8'), file=sys.stderr)
+                try:
+                    contents = path.read_text(encoding='utf-8', errors='replace')
+                except FileNotFoundError:
+                    continue
+                if contents:
+                    print(contents, file=sys.stderr)
 
 
 if __name__ == '__main__':

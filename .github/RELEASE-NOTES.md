@@ -1,6 +1,6 @@
 Offline Windows x64 Joy-Con 2 connection assistant with a responsive local interface, system dark mode, English / Simplified Chinese / Traditional Chinese (Taiwan), and live button/stick visualization.
 
-Recommended: run `JoyCon2Connect-1.1.0-Setup.exe`, choose a folder and keep the desktop shortcut. The first-run web guide checks prerequisites, then walks through left pairing, right pairing and input testing. If needed, its Install vJoy action downloads and verifies the fixed official signed driver before opening the Windows wizard.
+Recommended: run `JoyCon2Connect-1.1.1-Setup.exe`, choose a folder and keep the desktop shortcut. The first-run web guide checks prerequisites, then walks through left pairing, right pairing and input testing. If needed, its Install vJoy action downloads and verifies the fixed official signed driver before opening the Windows wizard.
 
 Alternatively, extract the complete ZIP and run `JoyCon2Assistant.exe`; keep `_internal` and both EXEs together. No Python installation is required. Windows 10/11 x64 and Bluetooth Low Energy are required. The app/setup EXEs are unsigned.
 

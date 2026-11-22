@@ -47,7 +47,7 @@ class ServerTests(unittest.TestCase):
         status, data = self.request('/api/health')
         self.assertEqual(status, 200)
         self.assertEqual(json.loads(data)['app'], 'joycon2-local-assistant')
-        self.assertEqual(json.loads(data)['version'], '1.1.0')
+        self.assertEqual(json.loads(data)['version'], '1.1.1')
         status, data = self.request('/api/status')
         self.assertEqual(status, 200)
         self.assertEqual(json.loads(data)['phase'], 'idle')

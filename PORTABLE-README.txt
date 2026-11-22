@@ -1,4 +1,4 @@
-Joy-Con 2 Local Assistant 1.1.0 — Windows 10/11 x64
+Joy-Con 2 Local Assistant 1.1.1 — Windows 10/11 x64
 
 1. Extract the ENTIRE ZIP into a folder you own. Keep _internal and both EXEs.
 2. Run JoyCon2Assistant.exe. No Python installation is needed.

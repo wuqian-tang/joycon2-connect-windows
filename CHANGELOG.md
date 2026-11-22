@@ -1,5 +1,13 @@
 # Changelog / 更新记录
 
+## 1.1.1
+
+- Larger, symmetrical Joy-Con icons with transparent backgrounds across the app, website and desktop shortcut.
+- Rounded shoulder controls and aligned inner rails on both live controller drawings.
+- Fixed a Windows verification-script cleanup race by waiting for the server process to exit.
+
+统一使用透明背景、放大且对称的双 JC 图标。修圆肩键，并对齐左右内侧竖条；修复 Windows 验证脚本等待进程退出时的清理时序。
+
 ## 1.1.0
 
 - Portable Windows x64 app with a separate worker and bundled runtime.
