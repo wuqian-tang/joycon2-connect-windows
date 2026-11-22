@@ -54,7 +54,7 @@ The initial hardware test used Windows 10 and vJoy 2.2.2.0. Other Bluetooth adap
 
 ### Download and use
 
-1. Download **`JoyCon2Connect-1.1.0-Setup.exe`** from [Releases](https://github.com/wuqian-tang/joycon2-connect-windows/releases/latest). Run it, choose a folder, and keep the desktop shortcut selected. No Python or terminal is needed.
+1. Download **`JoyCon2Connect-1.1.1-Setup.exe`** from [Releases](https://github.com/wuqian-tang/joycon2-connect-windows/releases/latest). Run it, choose a folder, and keep the desktop shortcut selected. No Python or terminal is needed.
 2. Open the app. The browser checks your PC first. If vJoy is missing, click **Install vJoy** to download and verify the official installer, finish its Windows wizard, then click **Recheck**. Restart if requested. If device 1 needs configuration, the app offers that step separately. Existing ready drivers are kept.
 3. Put the Switch 2 to sleep. Click **Start connecting** and hold the **left** controller's small round SYNC button until its four lights cycle, then release it. The guide shows the exact button location.
 4. When prompted, do the same for the **right** controller.
@@ -100,7 +100,7 @@ Build and verify both EXEs and the ZIP:
 
 To also build the installer, install the official Inno Setup compiler and run `scripts/build-setup.ps1 -SkipPortableBuild`. The GitHub Windows release workflow uses the compiler already provided by the runner. Both downloads include SHA-256 checksums.
 
-The script runs Python tests, builds with PyInstaller, checks a real packaged service on a separate port and passively scans Bluetooth without pairing. Output: `dist/JoyCon2Assistant` and `releases/JoyCon2Assistant-1.1.0-windows-x64.zip`, with a SHA-256 checksum. Driver installation and real controller pairing remain separate checks.
+The script runs Python tests, builds with PyInstaller, checks a real packaged service on a separate port and passively scans Bluetooth without pairing. Output: `dist/JoyCon2Assistant` and `releases/JoyCon2Assistant-1.1.1-windows-x64.zip`, with a SHA-256 checksum. Driver installation and real controller pairing remain separate checks.
 
 Additional frontend locale checks, with Node.js installed:
 
@@ -139,7 +139,7 @@ This is an independent community tool, unaffiliated with Nintendo, Microsoft or 
 
 ### 下载和使用
 
-1. 在 [Releases](https://github.com/wuqian-tang/joycon2-connect-windows/releases/latest) 下载 **`JoyCon2Connect-1.1.0-Setup.exe`**。双击安装、选择目录，并保留桌面快捷方式选项；无需安装 Python 或使用终端。
+1. 在 [Releases](https://github.com/wuqian-tang/joycon2-connect-windows/releases/latest) 下载 **`JoyCon2Connect-1.1.1-Setup.exe`**。双击安装、选择目录，并保留桌面快捷方式选项；无需安装 Python 或使用终端。
 2. 打开助手，网页会先检查电脑环境。缺少 vJoy 时，点击**安装 vJoy**，助手下载并验证官方安装包，再打开 Windows 安装向导。完成后点击**重新检查**，按需重启。设备 1 配置不完整时，会单独提供配置步骤；已就绪的驱动会保留。
 3. 让 Switch 2 保持睡眠，点击**开始连接**。先长按**左手**磁吸内侧的小圆 SYNC 同步键，四灯循环闪烁后松开。网页有位置示意图。
 4. 网页提示连接**右手**后，再对右手重复相同操作。
@@ -153,11 +153,11 @@ This is an independent community tool, unaffiliated with Nintendo, Microsoft or 
 
 ### 常见问题
 
-- **缺少 vJoy / 版本不匹配：**安装官方 2.2.2.0 驱动，重启并检查设备 1 的轴和按钮配置。随程序附带的 SDK DLL 不能替代系统驱动。
-- **找不到手柄：**打开蓝牙、让主机保持睡眠，将手柄放到电脑附近，重新按 SYNC，一次只连接一只。普通按键可能让手柄回连主机。
-- **Steam 测试正常、游戏没反应：**在游戏属性 → 控制器中启用 Steam Input，先连接，再通过 Steam 重启游戏。本工具无法保证兼容所有游戏。
-- **连接中断：**断开后重试，避免同时运行 Joy2Win 或其他手柄蓝牙桥接程序。
-- **网页打不开：**重新运行 EXE，检查 19862 端口是否被占用；网页服务只监听本机回环地址。
+- **缺少 vJoy / 版本不匹配：** 安装官方 2.2.2.0 驱动，重启并检查设备 1 的轴和按钮配置。随程序附带的 SDK DLL 不能替代系统驱动。
+- **找不到手柄：** 打开蓝牙、让主机保持睡眠，将手柄放到电脑附近，重新按 SYNC，一次只连接一只。普通按键可能让手柄回连主机。
+- **Steam 测试正常、游戏没反应：** 在游戏属性 → 控制器中启用 Steam Input，先连接，再通过 Steam 重启游戏。本工具无法保证兼容所有游戏。
+- **连接中断：** 断开后重试，避免同时运行 Joy2Win 或其他手柄蓝牙桥接程序。
+- **网页打不开：** 重新运行 EXE，检查 19862 端口是否被占用；网页服务只监听本机回环地址。
 
 本工具与安装包 EXE 尚未进行代码签名。官方 vJoy 安装包打开前会校验固定 SHA-256 和 Windows 签名。只有点击对应设置按钮，才会安装驱动或配置设备，Windows 可能请求管理员权限。工具不会关闭 Windows 安全功能。
 
