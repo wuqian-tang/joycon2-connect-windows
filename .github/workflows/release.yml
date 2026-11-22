@@ -1,0 +1,73 @@
+name: Windows portable release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    tags: ["v*"]
+    paths: ["source-import.zip", ".github/workflows/release.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      # Initial browser upload only: unpack the audited source bundle into
+      # ordinary reviewable repository files. The archive contains no workflows.
+      # Once imported, normal builds use the checked-out source directly.
+      - name: Import initial source archive if present
+        id: source
+        shell: pwsh
+        run: |
+          if (Test-Path -LiteralPath source-import.zip) {
+            Expand-Archive -LiteralPath source-import.zip -DestinationPath . -Force
+            git rm source-import.zip
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add --all
+            git commit -m 'Import portable assistant source, UI, tests and licenses'
+            if ($LASTEXITCODE -ne 0) { throw 'Source import commit failed' }
+            git push origin HEAD:main
+            if ($LASTEXITCODE -ne 0) { throw 'Source import push failed' }
+            'imported=true' >> $env:GITHUB_OUTPUT
+          }
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.10.6"
+          architecture: x64
+      - name: Test frontend language behavior
+        shell: pwsh
+        run: node --test tests/test_i18n.cjs
+      - name: Build and smoke portable Windows application
+        shell: pwsh
+        run: ./scripts/build-portable.ps1 -SkipBluetoothScan
+      - name: Build guided Windows installer
+        shell: pwsh
+        run: ./scripts/build-setup.ps1 -SkipPortableBuild
+      - name: Publish release
+        if: steps.source.outputs.imported == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $version = & ./.venv/Scripts/python.exe -c 'from joycon2_assistant.paths import VERSION; print(VERSION)'
+          $tag = "v$version"
+          if ($env:GITHUB_REF -like 'refs/tags/*' -and $env:GITHUB_REF_NAME -ne $tag) {
+            throw 'Tag must match paths.VERSION'
+          }
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            git fetch origin tag $tag
+            if ($LASTEXITCODE -ne 0) { throw 'Could not verify existing release tag' }
+            $existing = git rev-parse "$tag^{commit}"
+            if ($existing -ne (git rev-parse HEAD)) { throw 'Bump VERSION before releasing another commit' }
+            gh release upload $tag releases/*.exe releases/*.zip releases/*.sha256 --clobber --repo $env:GITHUB_REPOSITORY
+          } else {
+            gh release create $tag releases/*.exe releases/*.zip releases/*.sha256 --target (git rev-parse HEAD) --title "Joy-Con 2 Connect for Windows $version" --notes-file .github/RELEASE-NOTES.md --repo $env:GITHUB_REPOSITORY
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'Release upload failed' }
