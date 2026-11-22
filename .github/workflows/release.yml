@@ -1,4 +1,4 @@
-name: Windows portable release
+name: Windows release
 
 on:
   workflow_dispatch:
@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: windows-release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows:
     runs-on: windows-2022
@@ -17,14 +21,22 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      # Initial browser upload only: unpack the audited source bundle into
-      # ordinary reviewable repository files. The archive contains no workflows.
-      # Once imported, normal builds use the checked-out source directly.
-      - name: Import initial source archive if present
+      # Browser source uploads become ordinary reviewable repository files.
+      # Workflows are maintained separately and excluded from the source archive.
+      - name: Import source archive if present
         id: source
         shell: pwsh
         run: |
           if (Test-Path -LiteralPath source-import.zip) {
+            $archive = [IO.Compression.ZipFile]::OpenRead((Join-Path $PWD 'source-import.zip'))
+            try { $incoming = @($archive.Entries.FullName) } finally { $archive.Dispose() }
+            $obsolete = @(git ls-files | Where-Object {
+              $_ -ne 'source-import.zip' -and $_ -notlike '.github/workflows/*' -and $incoming -cnotcontains $_
+            })
+            if ($obsolete.Count) {
+              git rm -- $obsolete
+              if ($LASTEXITCODE -ne 0) { throw 'Could not remove moved source files' }
+            }
             Expand-Archive -LiteralPath source-import.zip -DestinationPath . -Force
             git rm source-import.zip
             git config user.name 'github-actions[bot]'
@@ -57,6 +69,8 @@ jobs:
         run: |
           $version = & ./.venv/Scripts/python.exe -c 'from joycon2_assistant.paths import VERSION; print(VERSION)'
           $tag = "v$version"
+          $releaseNotes = Join-Path $env:RUNNER_TEMP 'joycon2-release-notes.md'
+          [IO.File]::ReadAllText('.github/RELEASE-NOTES.md').Replace('{{VERSION}}', $version) | Set-Content -LiteralPath $releaseNotes -Encoding utf8
           if ($env:GITHUB_REF -like 'refs/tags/*' -and $env:GITHUB_REF_NAME -ne $tag) {
             throw 'Tag must match paths.VERSION'
           }
@@ -68,6 +82,6 @@ jobs:
             if ($existing -ne (git rev-parse HEAD)) { throw 'Bump VERSION before releasing another commit' }
             gh release upload $tag releases/*.exe releases/*.zip releases/*.sha256 --clobber --repo $env:GITHUB_REPOSITORY
           } else {
-            gh release create $tag releases/*.exe releases/*.zip releases/*.sha256 --target (git rev-parse HEAD) --title "Joy-Con 2 Connect for Windows $version" --notes-file .github/RELEASE-NOTES.md --repo $env:GITHUB_REPOSITORY
+            gh release create $tag releases/*.exe releases/*.zip releases/*.sha256 --target (git rev-parse HEAD) --title "Joy-Con 2 Connect for Windows $version" --notes-file $releaseNotes --repo $env:GITHUB_REPOSITORY
           }
           if ($LASTEXITCODE -ne 0) { throw 'Release upload failed' }
